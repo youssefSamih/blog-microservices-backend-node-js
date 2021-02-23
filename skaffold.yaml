@@ -1,0 +1,59 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+      - ../../ProjectReact/blog-microservices-react/infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: youssefsamih/blog-microservices-react-client
+      context: ../../ProjectReact/blog-microservices-react
+      docker:
+        dockerfile:
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: youssefsamih/comments
+      context: comments
+      docker:
+        dockerfile:
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: youssefsamih/event-bus
+      context: event-bus
+      docker:
+        dockerfile:
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: youssefsamih/moderation
+      context: moderation
+      docker:
+        dockerfile:
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: youssefsamih/posts
+      context: posts
+      docker:
+        dockerfile:
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: youssefsamih/query
+      context: query
+      docker:
+        dockerfile:
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
